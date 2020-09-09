@@ -9,7 +9,8 @@ var firebaseConfig = {
   };
 
   firebase.initializeApp(firebaseConfig);
-  //refer messages 
+  //refer messages
+
   var messagesRef=firebase.database().ref('messages')
 //listen for form submit
 document.getElementById('testForm').addEventListener('submit',submitForm);
@@ -18,12 +19,24 @@ function submitForm(e){
     var name =getInputVal('name');
     var mobile =getInputVal('mobile');
     var age =getInputVal('age');
+    var state =getInputVal('state');
+    state=state.toLowerCase();
+    readState(state);
     var email =getInputVal('email');
     var profession =getInputVal('profession');
     var dateofbirth =getInputVal('dateofbirth');
-    saveMessages(name,mobile,age,email,profession,dateofbirth) 
+    saveMessages(name,mobile,age,email,profession,dateofbirth,centers);
 }
 
+function readState(state){
+    var centers;
+    var ref = firebase.database().ref(state);
+    ref.on('value', (data) => {
+     centers = data.val();
+     document.getElementById("result").innerHTML ="<br>"+centers;
+})
+
+}
 function getInputVal(id){
     return document.getElementById(id).value;
 }
